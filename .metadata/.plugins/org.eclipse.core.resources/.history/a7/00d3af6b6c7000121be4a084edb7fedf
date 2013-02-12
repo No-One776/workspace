@@ -1,0 +1,7 @@
+package gvprojects.superttt.presenter;
+
+public class SuperTicTacToePresenter{
+//Has the main method.
+	//Talks between the model and the view
+	//Action listeners go here, in the presenter
+}

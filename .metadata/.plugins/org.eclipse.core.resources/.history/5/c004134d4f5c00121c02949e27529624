@@ -1,0 +1,297 @@
+package gvprojects.countdowntimer;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class CountDownTimerTest {
+
+	@Test
+	public void totalSecondsCombinesAllThreeValues() throws Throwable {
+		assertEquals(3661, CountDownTimer.totalSeconds(1, 1, 1));
+		assertEquals(0, CountDownTimer.totalSeconds(0, 0, 0));
+		assertEquals(11259, CountDownTimer.totalSeconds(3, 5, 159));
+		assertEquals(4805, CountDownTimer.totalSeconds(0, 80, 5));
+	}
+
+	// I suggest at least 3 more tests for totalSeconds(int, int, int).
+	// (Make sure the method handles 0s correctly)
+
+	@Test
+	public void defaultConstructorSetsTimeToZero() throws Throwable {
+		CountDownTimer timer = new CountDownTimer();
+		assertEquals(0, timer.totalSeconds());
+	}
+
+	// The test above should be sufficient for the default constructor
+
+	@Test
+	public void threeParameterConstructorCorrectlySetsTime() throws Throwable {
+		CountDownTimer timer = new CountDownTimer(1, 2, 3);
+		assertEquals(3723, timer.totalSeconds());
+	}
+
+	// Assuming your constructor simply sets instance variables and doesn't
+	// contain any logic, one test should be sufficient.
+	// Test CountDownTimer(int, int) and CountDownTimer(int) in a similar
+	// manner.
+
+	@Test
+	public void twoParameterConstructorCorrectlySetsTime() throws Throwable {
+		CountDownTimer time = new CountDownTimer(5, 3);
+		assertEquals(303, time.totalSeconds());
+	}
+
+	@Test
+	public void oneParameterConstructorCorrectlySetsTime() throws Throwable {
+		CountDownTimer time = new CountDownTimer(3);
+		assertEquals(3, time.totalSeconds());
+	}
+
+	@Test
+	public void copyConstructor() throws Throwable {
+		CountDownTimer timer1 = new CountDownTimer(2, 3, 4);
+		CountDownTimer timer2 = new CountDownTimer(timer1);
+		assertEquals(7384, timer2.totalSeconds());
+		CountDownTimer timer3 = new CountDownTimer(0, 55, 64);
+		CountDownTimer timer4 = new CountDownTimer(timer3);
+		assertEquals(3364, timer4.totalSeconds());
+	}
+
+	// How many tests you need for this constructor depends on how much logic
+	// you use. One test may be sufficient,
+	// you many need a set of tests similar to your tests for totalSeconds(int,
+	// int, int)
+
+	@Test
+	public void stringConstructor() throws Throwable {
+		CountDownTimer timer1 = new CountDownTimer("11:12:13");
+		assertEquals(40333, timer1.totalSeconds());
+		CountDownTimer timer2 = new CountDownTimer("12:13");
+		assertEquals(733, timer2.totalSeconds());
+		CountDownTimer timer3 = new CountDownTimer("13");
+		assertEquals(13, timer3.totalSeconds());
+		CountDownTimer timer4 = new CountDownTimer("0:11:13");
+		assertEquals(673, timer4.totalSeconds());
+		CountDownTimer timer5 = new CountDownTimer("0:11:03");
+		assertEquals(663, timer5.totalSeconds());
+		CountDownTimer timer6 = new CountDownTimer("1:1:3");
+		assertEquals(3663, timer6.totalSeconds());
+		CountDownTimer timer7 = new CountDownTimer("1:1:0");
+		assertEquals(3660, timer7.totalSeconds());
+		CountDownTimer timer8 = new CountDownTimer("1:0:3");
+		assertEquals(3603, timer8.totalSeconds());
+	}
+
+	// You'll need *a lot* more test here. Remember your input can have 1, 2, or
+	// 3 numbers,
+	// and may or may not have leading zeros.
+
+	@Test
+	public void equalsDetectsEquality() throws Throwable {
+		CountDownTimer timer1 = new CountDownTimer(2, 3, 4);
+		CountDownTimer timer2 = new CountDownTimer("2:03:04");
+		assertTrue(timer1.equals(timer2));
+		CountDownTimer timer3 = new CountDownTimer(2, 3, 4);
+		CountDownTimer timer4 = new CountDownTimer("1:03:04");
+		assertTrue(timer3.equals(timer4));
+		CountDownTimer timer5 = new CountDownTimer(2, 0, 4);
+		CountDownTimer timer6 = new CountDownTimer("2:03:00");
+		assertFalse(timer5.equals(timer6));
+		CountDownTimer timer7 = new CountDownTimer(2, 1, 4);
+		CountDownTimer timer8 = new CountDownTimer("2:01:04");
+		assertTrue(timer7.equals(timer8));
+	}
+
+	// Be sure to verify that equals returns false when it should. That requires
+	// at least *three* separate tests
+
+	@Test
+	public void compareToDetectsEquality() throws Throwable {
+		CountDownTimer timer1 = new CountDownTimer(2, 3, 4);
+		CountDownTimer timer2 = new CountDownTimer("2:03:04");
+		assertTrue(timer1.equals(timer2));
+		assertEquals(0, timer2.compareTo(timer1));
+		CountDownTimer timer3 = new CountDownTimer(13, 4);
+		CountDownTimer timer4 = new CountDownTimer("13:04");
+		assertTrue(timer3.equals(timer4));
+		assertEquals(0, timer4.compareTo(timer3));
+		CountDownTimer timer5 = new CountDownTimer(4);
+		CountDownTimer timer6 = new CountDownTimer("4");
+		assertTrue(timer5.equals(timer6));
+		assertEquals(0, timer6.compareTo(timer5));
+		CountDownTimer timer7 = new CountDownTimer(2, 13, 4);
+		CountDownTimer timer8 = new CountDownTimer("2:13:04");
+		assertTrue(timer7.equals(timer8));
+		assertEquals(0, timer8.compareTo(timer7));
+		CountDownTimer timer9 = new CountDownTimer(2, 3, 14);
+		CountDownTimer timer10 = new CountDownTimer("2:03:14");
+		assertTrue(timer10.equals(timer9));
+		assertEquals(0, timer9.compareTo(timer10));
+		CountDownTimer timer11 = new CountDownTimer(1, 3, 4);
+		CountDownTimer timer12 = new CountDownTimer("2:03:04");
+		assertFalse(timer11.equals(timer12));
+		assertEquals(3600, timer12.compareTo(timer11));
+		CountDownTimer timer13 = new CountDownTimer(3, 55);
+		CountDownTimer timer14 = new CountDownTimer("3:55");
+		assertTrue(timer13.equals(timer14));
+		assertEquals(0, timer14.compareTo(timer13));
+		CountDownTimer timer15 = new CountDownTimer(12, 44, 4);
+		CountDownTimer timer16 = new CountDownTimer("12:44:04");
+		assertTrue(timer15.equals(timer16));
+		assertEquals(0, timer16.compareTo(timer15));
+		CountDownTimer timer17 = new CountDownTimer(22, 3, 24);
+		CountDownTimer timer18 = new CountDownTimer("22:03:24");
+		assertTrue(timer17.equals(timer18));
+		assertEquals(0, timer18.compareTo(timer17));
+		CountDownTimer timer19 = new CountDownTimer(0, 3, 4);
+		CountDownTimer timer20 = new CountDownTimer("0:03:04");
+		assertTrue(timer19.equals(timer20));
+		assertEquals(0, timer20.compareTo(timer19));
+		CountDownTimer timer21 = new CountDownTimer(2, 0, 4);
+		CountDownTimer timer22 = new CountDownTimer("2:00:04");
+		assertTrue(timer21.equals(timer22));
+		assertEquals(0, timer22.compareTo(timer21));
+		CountDownTimer timer24 = new CountDownTimer(2, 04, 0);
+		CountDownTimer timer23 = new CountDownTimer("2:04:0");
+		assertTrue(timer24.equals(timer23));
+		assertEquals(0, timer23.compareTo(timer24));
+	}
+
+	// You need *at least* 9 total total tests. ***3 is not enough***
+
+	@Test
+	public void subtractHandlesSmallSeconds() throws Throwable {
+		CountDownTimer timer = new CountDownTimer(55);
+		timer.subtract(25);
+		assertEquals(30, timer.totalSeconds());
+		CountDownTimer timer2 = new CountDownTimer(2, 55);
+		timer2.subtract(55);
+		assertEquals(120, timer2.totalSeconds());
+		CountDownTimer timer3 = new CountDownTimer(1, 1, 5);
+		timer3.subtract(25);
+		assertEquals(3640, timer3.totalSeconds());
+	}
+
+	// Make sure you test all the different flavors of "roll over"
+
+	// Remember to test decrement. However, you don't need too many decrement
+	// tests if your implementation doesn't
+	// contain any logic.
+
+	@Test
+	public void toStringAddsLeading0toSeconds() throws Throwable {
+		CountDownTimer timer = new CountDownTimer(0, 0, 3);
+		assertEquals("0:00:03", timer.toString());
+		CountDownTimer timer2 = new CountDownTimer(0, 4, 3);
+		assertEquals("0:04:03", timer2.toString());
+		CountDownTimer timer3 = new CountDownTimer(1, 11, 13);
+		assertEquals("1:11:13", timer3.toString());
+		CountDownTimer timer4 = new CountDownTimer(0, 11, 13);
+		assertEquals("0:11:13", timer4.toString());
+		CountDownTimer timer5 = new CountDownTimer(1, 5, 23);
+		assertEquals("1:05:23", timer5.toString());
+		CountDownTimer timer6 = new CountDownTimer(0, 0, 0);
+		assertEquals("0:00:00", timer6.toString());
+	}
+
+	// You will need many tests for toString
+
+	// /////////////////////////////////////////////////////////////////
+	//
+	// Step 4
+	//
+	// /////////////////////////////////////////////////////////////////
+
+	/*
+	 * Uncomment this after you've implemented load() and save()
+	 * 
+	 * @Test public void testLoadSave() throws IOException { CountDownTimer c1 =
+	 * new CountDownTimer(10, 10, 10); c1.save("timer1.txt"); CountDownTimer c2
+	 * = new CountDownTimer(); c2.load("timer1.txt"); assertTrue(c1.equals(c2));
+	 * } // Your files can contain any data you wish, as long as you can save,
+	 * then re-load an object.
+	 */
+
+	/*
+	 * Uncomment this after you've implemented getNumberCreated()
+	 * 
+	 * @Test public void testNumberCreated_1() throws IOException { int count =
+	 * CountDownTimer.getNumberCreated(); new CountDownTimer(1, 1, 1); new
+	 * CountDownTimer(5, 5); new CountDownTimer(5); new CountDownTimer();
+	 * assertTrue(CountDownTimer.getNumberCreated() == count + 4); }
+	 */
+
+	// /////////////////////////////////////////////////////////////////
+	//
+	// Step 5
+	//
+	// These tests will fail until you get to step 5. When you reach step 5,
+	// remove the @Ignore annotation.
+	//
+	// /////////////////////////////////////////////////////////////////
+
+	@Test(expected = IllegalArgumentException.class)
+	public void totalSecondsShouldThrowExceptionIfSecondsNegative() {
+		CountDownTimer.totalSeconds(1, 2, -5);
+		CountDownTimer.totalSeconds(1, -2, 5);
+		CountDownTimer.totalSeconds(-1, 2, 5);
+		CountDownTimer.totalSeconds(1, -2, -5);
+		CountDownTimer.totalSeconds(-1, 2, -5);
+		CountDownTimer.totalSeconds(-1, -2, -5);
+		CountDownTimer.totalSeconds(-1, -2, 5);
+	}
+
+	// add more tests here
+
+	@Test(expected = IllegalArgumentException.class)
+	public void constructorShouldThrowExceptionIfSecondsNegative() {
+		new CountDownTimer(1, -2, 5);
+		new CountDownTimer(1, 2, -5);
+		new CountDownTimer(-1, 2, 5);
+		new CountDownTimer(-2, 5);
+		new CountDownTimer(2, -5);
+		new CountDownTimer(-5);
+	}
+
+	// add more tests here. Be sure to test all the constructors.
+
+	@Test(expected = IllegalArgumentException.class)
+	public void stringConstructor_error18() {
+		new CountDownTimer("1:2:3:4");
+		new CountDownTimer("1:2:3:");
+		new CountDownTimer("1::3:4");
+		new CountDownTimer(":2:4");
+		new CountDownTimer("2:3:");
+		new CountDownTimer(":4");
+		new CountDownTimer("11:2:999");
+	}
+
+	// You need *a lot* of tests here, because there are many ways that a String
+	// could
+	// not be a valid timer value. For example, what should "3:" or "1:62"
+	// generate?
+
+	@Test(expected = IllegalArgumentException.class)
+	public void decShouldThrowExceptionIfSecondsNegative() {
+		CountDownTimer time = new CountDownTimer(1);
+		time.dec();
+		CountDownTimer timer = new CountDownTimer(0);
+		timer.dec();
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void subtractShouldThrowExceptionIfSecondsNegative() {
+		CountDownTimer time = new CountDownTimer(55);
+		time.subtract(-1);
+		CountDownTimer timer = new CountDownTimer(55);
+		timer.subtract(-15);
+	}
+
+	// Finally, write tests to verify that subtract() and dec() throw exceptions
+	// when necessary.
+
+}
+
+
+}

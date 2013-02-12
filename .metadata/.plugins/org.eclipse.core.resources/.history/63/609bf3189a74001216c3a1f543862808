@@ -1,0 +1,36 @@
+package gvprojects.superttt.view;
+
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JPanel;
+
+public class SuperTicTacToeView {
+	JFrame frame;
+	
+	JPanel board;
+//Buttons,layout managers, frames etc
+	
+	public SuperTicTacToeView(){
+		
+	}
+	
+	
+		// Create the menu
+		JMenuBar menu = new JMenuBar();
+		f.setJMenuBar(menu);
+
+		// Create and add the file menu
+		JMenu fileMenu = new JMenu("File");
+		menu.add(fileMenu);
+
+		// Create menu items
+		 = new JMenuItem("");
+		quit = new JMenuItem("Quit");
+		
+
+		// Add menu items to the menu
+		fileMenu.add();
+		fileMenu.add(quit);
+	
+}

@@ -1,0 +1,20 @@
+package gvprojects.superttt.presenter;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class SuperTicTacToePresenter implements ActionListener{
+
+	public void actionPerformed(ActionEvent e) {
+		
+		
+	}
+	
+	public static void main(){
+		
+	}
+//Has the main method.
+	//Talks between the model and the view
+	//Action listeners go here, in the presenter
+	//if b is pushed, engine.doesThis, then update view
+}

@@ -1,0 +1,5 @@
+package gvprojects.superttt.view;
+
+public class SuperTicTacToeView {
+//Buttons,layout managers, frames etc
+}
