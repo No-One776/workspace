@@ -5,6 +5,7 @@ package gvprojects.chess.presenter;
 
 import gvprojects.chess.model.Model;
 import gvprojects.chess.model.Move;
+import gvprojects.chess.model.Player;
 import gvprojects.chess.view.View;
 
 /**
@@ -15,6 +16,7 @@ public class Presenter {
 
 	private Model engine;
 	private View view;
+	private int checkCount = 0;
 
 	/**
 	 * Constructor that creates the game engine and the view.Then it starts the
@@ -65,18 +67,32 @@ public class Presenter {
 						m.toColumn = str.charAt(4) - 49;
 					else
 						move = false;
+					// Sets the current player for checking inCheck
+					Player p = engine.currentPlayer();
+					// Moves
 					if (move != false)
 						move(m);
+					// Checks to see if player went into check, if so moves the
+					// player back and tells the player he cannot move and end
+					// in check
+					if (engine.inCheck(p)) {
+						view.print("You are in check & cannot end a move in check "
+								+ p);
+						engine.undoLastMove(m, p);
+						checkCount++;
+						engine.setCheckCount(checkCount);
+					} else
+						checkCount = 0;
 				} else {
 					view.print("Invalid Move. Please try again");
 					move = false;
 				}
-				//Checks to see if the player is in check
+				// Checks to see if the player is in check
 				boolean check = engine.inCheck(engine.currentPlayer());
-				if (check){
+				if (check) {
 					view.print("You are in check " + engine.currentPlayer());
 				}
-				
+
 			} while (move == false);
 		} while (engine.isComplete() == false);
 

@@ -17,11 +17,11 @@ public class PawnTest extends ChessPieceTest {
 	protected IChessPiece make(Player p) {
 		return new Pawn(p);
 	}
-	
+
 	@Override
 	protected Move getValidMove(int row, int col) {
-	      return new Move(row, col, row -1, col);
-	   }
+		return new Move(row, col, row - 1, col);
+	}
 
 	private IChessPiece black = make(Player.BLACK);
 	private IChessPiece white = make(Player.WHITE);
@@ -91,5 +91,16 @@ public class PawnTest extends ChessPieceTest {
 				black.isValidMove(new Move(1, 1, 2, 2), board));
 		assertFalse("Pawn Test 9-2",
 				black.isValidMove(new Move(1, 1, 3, 3), board));
+	}
+
+	// Override because getValidMove moves forward 1 and a pawn can only
+	// capture going diagonal and not forward
+	@Override
+	@Test
+	public void canCapture() throws Throwable {
+		Move move = new Move(1, 1, 2, 2);
+		board[move.toRow][move.toColumn] = make(piece.player().next());
+		board[move.fromRow][move.fromColumn] = piece;
+		assertTrue("ChessPiece Test 4", piece.isValidMove(move, board));
 	}
 }

@@ -14,6 +14,8 @@ public class Model implements IChessModel {
 	private IChessPiece[][] board;
 	private final int rows = 8, cols = 8;
 	private Player player;
+	private IChessPiece takenPiece;
+	private int checkCount = 0;;
 
 	/**
 	 * Constructor that creates a chess board, fills it with pieces, and sets
@@ -96,12 +98,15 @@ public class Model implements IChessModel {
 		// Checks that the king is not in check in any direction
 		int a = 1;
 		int b = 0;
+
 		// Check down
 		if (checkSide(p, r, c, a, b))
 			return true;
-		// Checks Down and Right
+
+		// Diagonal Checks Down and Right
 		if (checkDiag(p, r, c, a, b + 1))
 			return true;
+
 		// -------------------------------------------------
 		a = 0;
 		b = 1;
@@ -109,39 +114,43 @@ public class Model implements IChessModel {
 		if (checkSide(p, r, c, a, b))
 			return true;
 
-		// Check Back and Right
+		// Diagonal Check Back and Right
 		if (checkDiag(p, r, c, a - 1, b))
 			return true;
+
 		// -------------------------------------------------
 		a = -1;
 		b = 0;
 		// Check above
 		if (checkSide(p, r, c, a, b))
 			return true;
-		// Check Back and Up
+
+		// Diagonal Check Back and Up
 		if (checkDiag(p, r, c, a, b - 1))
 			return true;
+
 		// -------------------------------------------------
 		a = 0;
 		b = -1;
 		// Check left
 		if (checkSide(p, r, c, a, b))
 			return true;
-		// Check Down and Left
+
+		// Diagonal Check Down and Left
 		if (checkDiag(p, r, c, a + 1, b))
 			return true;
+
 		// ----------------End of Horizontal/Vertical
 
-//		// Check for the Pawn to take King
-//		if (validateMove(r - 1, c - 1) && board[r - 1][c - 1] != null
-//				&& board[r - 1][c - 1].player() != p
-//				&& board[r - 1][c - 1].name() == "Pawn")
-//			return true;
+		// // Check for the Pawn to take King
+		// if (validateMove(r - 1, c - 1) && board[r - 1][c - 1] != null
+		// && board[r - 1][c - 1].player() != p
+		// && board[r - 1][c - 1].name() == "Pawn")
+		// return true;
 
 		return false;
 	}
 
-	
 	// Helper method for seeing if king is in check horizontally or vertically
 	private boolean checkDiag(Player p, int r, int c, int a, int b) {
 		boolean taken = false;
@@ -159,8 +168,14 @@ public class Model implements IChessModel {
 			}
 			first++;
 			// Increments the moves
-			a += a;
-			b += b;
+			if (a >= 1)
+				a++;
+			else if (a <= -1)
+				a--;
+			if (b >= 1)
+				b++;
+			else if (b <= -1)
+				b--;
 		}
 		return false;
 	}
@@ -177,10 +192,18 @@ public class Model implements IChessModel {
 								+ a][c + b].name() == "Rook"))
 					return true;
 				taken = true;
+				System.out.println("Taken by: " + board[r + a][c + b].name());
 			}
 			// Increments the moves
-			a += a;
-			b += b;
+			if (a >= 1)
+				a++;
+			else if (a <= -1)
+				a--;
+			if (b >= 1)
+				b++;
+			else if (b <= -1)
+				b--;
+
 		}
 		return false;
 	}
@@ -239,7 +262,19 @@ public class Model implements IChessModel {
 	 * @return true if game is done, false if otherwise
 	 */
 	public boolean isComplete() {
-		return false;
+		int count = 0;
+		for (int x = 0; x < rows; x++)
+			for (int y = 0; y < cols; y++)
+				if (board[x][y] != null && board[x][y].name() == "King")
+					count++;
+		return checkCount > 10 ? true : count != 2;
+		// if (checkCount > 10)
+		// return true;
+		// if (count == 2)
+		// return false;
+		// else
+		// return true;
+
 	}
 
 	/**
@@ -258,6 +293,7 @@ public class Model implements IChessModel {
 	public void move(Move m) {
 		// If the piece at the start spot is this player
 		if (board[m.fromRow][m.fromColumn].player() == player) {
+			takenPiece = board[m.toRow][m.toColumn];
 			// Move the piece and make the old spot empty
 			board[m.toRow][m.toColumn] = board[m.fromRow][m.fromColumn];
 			board[m.fromRow][m.fromColumn] = null;
@@ -297,6 +333,39 @@ public class Model implements IChessModel {
 	 */
 	public IChessPiece pieceAt(int x, int y) {
 		return board[x][y];
+	}
+
+	/**
+	 * Undoes the last move for when a player moves to a position equating to
+	 * him being in check
+	 * 
+	 * @param m
+	 *            the move to undo
+	 * @param p
+	 *            the player to move
+	 */
+	public void undoLastMove(Move m, Player p) {
+		if (board[m.toRow][m.toColumn] != null
+				&& board[m.toRow][m.toColumn].player() == p) {
+			// Move the piece and make the old spot empty
+			board[m.fromRow][m.fromColumn] = board[m.toRow][m.toColumn];
+			if (takenPiece != null)
+				board[m.toRow][m.toColumn] = takenPiece;
+			else
+				board[m.toRow][m.toColumn] = null;
+			player = player == Player.WHITE ? Player.BLACK : Player.WHITE;
+		}
+
+	}
+
+	/**
+	 * Sets the number of times check has been hit
+	 * 
+	 * @param checkCount
+	 *            the number of checks done
+	 */
+	public void setCheckCount(int checkCount) {
+		this.checkCount = checkCount;
 	}
 
 }

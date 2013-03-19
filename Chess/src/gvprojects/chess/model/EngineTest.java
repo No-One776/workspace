@@ -67,14 +67,13 @@ public class EngineTest {
 
 	@Test
 	public void checkGame() throws Throwable {
-		
-		//Moving pieces around without validation to check my inCheck method
+
+		// Moving pieces around without validation to check my inCheck method
 		engine.move(new Move(7, 4, 1, 5));
 		assertTrue("Check test", engine.inCheck(Player.BLACK));
 		engine.move(new Move(0, 5, 5, 5));
 		engine.move(new Move(1, 5, 4, 5));
 		assertFalse("Check test 1", engine.inCheck(Player.BLACK));
-
 		engine.move(new Move(1, 3, 5, 1));
 		assertFalse("Check test 2", engine.inCheck(Player.BLACK));
 		assertFalse("Check test 3", engine.inCheck(Player.WHITE));
@@ -84,7 +83,8 @@ public class EngineTest {
 
 	@Test
 	public void checkMate() throws Throwable {
-		
+		engine.setCheckCount(11);
+		assertTrue("CheckMate", engine.isComplete());
 	}
 
 }
