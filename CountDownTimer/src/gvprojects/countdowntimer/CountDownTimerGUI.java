@@ -153,8 +153,7 @@ public class CountDownTimerGUI extends JPanel {
 			JComponent b = (JComponent) e.getSource();
 			String input = null;
 
-			// -------------------------Sets button
-			// actions----------------------
+			// ----------Sets button actions----------------------
 			if (b == quit)
 				System.exit(1);
 
