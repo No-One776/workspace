@@ -1,8 +1,0 @@
-package gvprojects.superttt.view;
-
-import javax.swing.JFrame;
-
-public class SuperTicTacToeView {
-	JFrame main;
-//Buttons,layout managers, frames etc
-}

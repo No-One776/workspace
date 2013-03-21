@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Convert local variable &apos;gvprojects.superttt.presenter.SuperTicTacToePresenter.main().view&apos; in &apos;gvprojects.superttt.presenter.SuperTicTacToePresenter.main()&apos; to field&#x0A;- Original project: &apos;SuperTicTacToe&apos;&#x0A;- Original element: &apos;gvprojects.superttt.presenter.SuperTicTacToePresenter.main().view&apos;&#x0A;- Field name: &apos;view&apos;&#x0A;- Initialize field in method&#x0A;- Declared visibility: &apos;private&apos;&#x0A;- Declare field &apos;static&apos;" description="Convert local variable &apos;view&apos; to field" final="false" flags="2" id="org.eclipse.jdt.ui.promote.temp" initialize="1" input="/src&lt;gvprojects.superttt.presenter{SuperTicTacToePresenter.java" name="view" selection="334 31" stamp="1360624022567" static="true" version="1.0" visibility="2"/>
-</session>
