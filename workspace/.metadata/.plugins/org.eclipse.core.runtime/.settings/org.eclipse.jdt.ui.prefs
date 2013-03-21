@@ -1,0 +1,30 @@
+command=/usr/java/jdk1.7.0_03/bin/javadoc
+content_assist_lru_history=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><history maxLHS\="100" maxRHS\="10"><lhs name\="javax.accessibility.Accessible"><rhs name\="javax.swing.JButton"/></lhs><lhs name\="javax.swing.AbstractButton"><rhs name\="javax.swing.JButton"/></lhs><lhs name\="java.awt.ItemSelectable"><rhs name\="javax.swing.JButton"/></lhs><lhs name\="javax.swing.SwingConstants"><rhs name\="javax.swing.JButton"/></lhs><lhs name\="javax.swing.JComponent"><rhs name\="javax.swing.JButton"/></lhs><lhs name\="javax.swing.TransferHandler$HasGetTransferHandler"><rhs name\="javax.swing.JButton"/></lhs><lhs name\="java.awt.Container"><rhs name\="javax.swing.JButton"/></lhs><lhs name\="java.awt.Component"><rhs name\="javax.swing.JButton"/></lhs><lhs name\="java.awt.image.ImageObserver"><rhs name\="javax.swing.JButton"/></lhs><lhs name\="java.awt.MenuContainer"><rhs name\="javax.swing.JButton"/></lhs><lhs name\="javax.swing.JButton"><rhs name\="javax.swing.JButton"/></lhs><lhs name\="java.awt.LayoutManager"><rhs name\="java.awt.BorderLayout"/></lhs><lhs name\="java.awt.geom.Point2D"><rhs name\="java.awt.geom.Point2D$Double"/></lhs><lhs name\="java.lang.Cloneable"><rhs name\="java.awt.geom.Point2D$Double"/></lhs><lhs name\="java.awt.geom.Point2D$Double"><rhs name\="java.awt.geom.Point2D$Double"/></lhs></history>
+content_assist_number_of_computers=15
+content_assist_proposals_background=255,255,255
+content_assist_proposals_foreground=26,26,26
+eclipse.preferences.version=1
+fontPropagated=true
+org.eclipse.jdt.ui.editor.tab.width=
+org.eclipse.jdt.ui.formatterprofiles.version=12
+org.eclipse.jdt.ui.javadoclocations.migrated=true
+org.eclipse.jdt.ui.text.code_templates_migrated=true
+org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates><template autoinsert\="false" context\="typecomment_context" deleted\="false" description\="Comment for created types" enabled\="true" id\="org.eclipse.jdt.ui.text.codetemplates.typecomment" name\="typecomment">/**\n * @author ${user}\n * @version ${date}\n * ${tags}\n */</template></templates>
+org.eclipse.jdt.ui.text.custom_templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates/>
+org.eclipse.jdt.ui.text.templates_migrated=true
+org.eclipse.jface.textfont=1|Monospace|10.0|0|GTK|1|;
+proposalOrderMigrated=true
+spelling_ignore_ampersand_in_properties=true
+spelling_ignore_digits=true
+spelling_ignore_java_strings=true
+spelling_ignore_mixed=true
+spelling_ignore_non_letters=true
+spelling_ignore_sentence=true
+spelling_ignore_single_letters=true
+spelling_ignore_upper=true
+spelling_ignore_urls=true
+spelling_locale_initialized=true
+spelling_user_dictionary_encoding=
+tabWidthPropagated=true
+useAnnotationsPrefPage=true
+useQuickDiffPrefPage=true

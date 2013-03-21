@@ -1,0 +1,16 @@
+
+wd=`pwd`
+start=10
+for file in $*
+do
+    hostName=eos${start}
+    echo "Launching $file on $hostName"
+    ssh $hostName "cd $wd; javac $file" &
+    let start=$start+1
+done
+
+while ( ps | grep ssh) 
+do
+  echo "Still going";
+  sleep 1;
+done

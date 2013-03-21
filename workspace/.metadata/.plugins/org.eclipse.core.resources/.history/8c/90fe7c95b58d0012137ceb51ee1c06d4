@@ -1,0 +1,22 @@
+/**
+ * 
+ */
+package gvprojects.chess.model;
+
+/**
+ * @author rohrj
+ *
+ */
+public class Bishop extends ChessPiece{
+
+	public Bishop(Player p) {
+		super(p, "Bishop");
+	}
+	
+	@Override
+	protected IChessPiece make(Player p) {
+		return new Bishop(p);
+	}
+	
+	private IChessPiece bishop = make(Player.WHITE);
+}

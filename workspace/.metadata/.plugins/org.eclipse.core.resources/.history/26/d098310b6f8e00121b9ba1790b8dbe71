@@ -1,0 +1,82 @@
+/**
+ * 
+ */
+package gvprojects.chess.view;
+
+import gvprojects.chess.model.Model;
+
+import java.io.PrintStream;
+import java.util.Scanner;
+
+/**
+ * @author Justin Rohr
+ * 
+ */
+public class View {
+
+	Scanner reader = new Scanner(System.in);
+	PrintStream out = new PrintStream(System.out);
+	private final int bWidth = 41;
+	private Model model;
+
+	public View(Model e) {
+		model = e;
+	}
+
+	public void print(String str) {
+		out.println(str);
+	}
+
+	public void printBoard() {
+		// Print the top Column numbers
+		out.println(line(8));
+		// Prints the whole board
+		for (int x = 0; x < model.numRows(); x++) {
+			out.println("  " + printStars(bWidth));
+			out.print((char) ('A' + x) + " ");
+			for (int y = 0; y < model.numColumns(); y++)
+				out.print(boardRow(x, y));
+			out.println("|");
+		}
+		out.println("  " + printStars(bWidth));
+	}
+
+	private String line(int l) {
+		return l == 0 ? "  *  " : line(l - 1) + l + " *  ";
+	}
+
+	private String printStars(int w) {
+		return w == 1 ? "*" : "*" + printStars(w - 1);
+	}
+
+	private String boardRow(int row, int col) {
+		String str = "| ";
+		String name = " ";
+		try {
+			name = model.pieceAt(row, col).name();
+		} catch (NullPointerException e) {
+			name = " ";
+		}
+		if (name == "Rook")
+			str += " R ";
+		else if (name == "Bishop")
+			str += " B ";
+		else if (name == "King")
+			str += " K ";
+		else if (name == "Knight")
+			str += "Kn ";
+		else if (name == "Pawn")
+			str += " P ";
+		else if (name == "Queen")
+			str += " Q ";
+		else
+			str += "   ";
+		return str;
+	}
+
+	public String getMove() {
+		out.println(model.currentPlayer() + ", Please enter a Move: ");
+		String a = reader.next();
+	}
+
+}

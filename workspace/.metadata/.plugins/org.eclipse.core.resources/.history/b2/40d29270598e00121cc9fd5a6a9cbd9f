@@ -1,0 +1,24 @@
+/**
+ * 
+ */
+package gvprojects.chess.presenter;
+
+/**
+ * @author rohrj
+ *
+ */
+public class Presenter {
+
+	public Presenter(IChessPiece[][] p){
+		
+	}
+	
+	
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+
+	}
+
+}

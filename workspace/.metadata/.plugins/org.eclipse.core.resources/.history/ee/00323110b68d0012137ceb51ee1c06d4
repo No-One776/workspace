@@ -1,0 +1,28 @@
+package gvprojects.chess.model;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class BishopTest extends ChessPieceTest{
+	
+	@Override
+	protected IChessPiece make(Player p) {
+		return new Bishop(p);
+	}
+	
+	private IChessPiece bishop = make(Player.WHITE);
+	
+	@Test
+	public void canMoveDiagonal() throws Throwable {
+		board[1][1] = king;
+		assertTrue("King Test 1", king.isValidMove(new Move(1, 1, 2, 2), board));
+		assertTrue("King Test 1-2",
+				king.isValidMove(new Move(1, 1, 1, 2), board));
+		assertTrue("King Test 1-3",
+				king.isValidMove(new Move(1, 1, 0, 0), board));
+		assertTrue("King Test 1-4",
+				king.isValidMove(new Move(1, 1, 1, 0), board));
+	}
+	
+}

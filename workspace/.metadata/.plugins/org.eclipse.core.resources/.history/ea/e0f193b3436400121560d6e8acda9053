@@ -1,0 +1,46 @@
+package gvprojects.countdowntimer;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+/**
+ * GUI front end for a Count Down Timer.
+ * 
+ * @author Justin Rohr
+ * @version 1/20/13
+ */
+
+public class GUI extends JPanel {
+	private JButton start, stop, reset;
+	private JLabel stopwatch;
+
+	public static void main(){
+		new GUI();
+	}
+	
+	public GUI() {
+		//ActionListener l = new ActionListener(this);
+		
+		//Initialize the buttons
+		start = new JButton("Start");
+		stop = new JButton("Stop");
+		reset = new JButton("Reset");
+		
+		//Add a listener to the Buttons
+		start.addActionListener(new ButtonListener());
+		
+		
+		stopwatch = new JLabel("Stopwatch: ");
+	}
+
+	public void actionPerformed(ActionEvent e) {
+
+	}
+	private class ButtonListener implements ActionListener{
+		
+	}
+}

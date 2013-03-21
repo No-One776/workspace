@@ -1,0 +1,14 @@
+package gvprojects.chess.model;
+
+public class Queen extends ChessPiece {
+
+	public Queen(Player p) {
+		super(p, "Queen");
+	}
+	
+	@Override
+	protected isValidMove(Move m, IChessPiece[][] p){
+		
+	}
+
+}

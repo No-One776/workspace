@@ -1,0 +1,23 @@
+package gvprojects.chess.model;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class QueenTest extends ChessPieceTest{
+
+	@Override
+	protected IChessPiece make(Player p) {
+		return new Queen(p);
+	}
+
+	@Override
+	protected Move getValidMove(int row, int col){
+		return new Move (row, col, row+1, col+1);
+	}
+	
+	private IChessPiece queen = make(Player.WHITE);
+
+	
+	
+}

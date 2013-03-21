@@ -1,0 +1,15 @@
+package gvprojects.chess.model;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class BishopTest extends ChessPieceTest{
+	
+	@Override
+	protected IChessPiece make(Player p) {
+		return new Bishop(p);
+	}
+	
+	private IChessPiece bishop = make(Player.WHITE);
+}

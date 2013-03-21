@@ -1,0 +1,18 @@
+package gvprojects.chess.model;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class KnightTest extends ChessPieceTest{
+
+	@Override
+	 protected IChessPiece make(Player p) {
+	      return new Knight(p);
+	   }
+
+	@Override
+	protected Move getValidMove(int row, int col) {
+	      return new Move(row, col, row + 3, col+1);
+	   }
+}

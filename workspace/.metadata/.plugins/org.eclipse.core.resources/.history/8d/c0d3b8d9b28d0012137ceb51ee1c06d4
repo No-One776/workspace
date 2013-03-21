@@ -1,0 +1,25 @@
+package gvprojects.chess.model;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class KingTest extends ChessPieceTest{
+
+	@Override
+	protected IChessPiece make(Player p) {
+		return new King(p);
+	}
+	
+	private IChessPiece king = make(Player.WHITE);
+	
+	@Test
+	public void canMoveAnywhereInOneSpace() throws Throwable {
+		board[1][1] = king;
+		assertTrue("Pawn Test 9",
+				king.isValidMove(new Move(1, 1, 2, 2), board));
+		assertTrue("Pawn Test 9-2",
+				king.isValidMove(new Move(1, 1, 1, 2), board));
+	}
+
+}

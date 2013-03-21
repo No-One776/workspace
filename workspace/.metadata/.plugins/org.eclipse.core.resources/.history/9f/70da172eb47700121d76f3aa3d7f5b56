@@ -1,0 +1,75 @@
+package gvprojects.superttt.presenter;
+
+import gvprojects.sttt.model.CellState;
+import gvprojects.superttt.model.SuperTicTacToeModel;
+import gvprojects.superttt.view.SuperTicTacToeView;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JComponent;
+
+public class SuperTicTacToePresenter {
+
+	private  SuperTicTacToeModel engine;
+	private  SuperTicTacToeView view;
+
+	class ResetButtonListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			engine.reset();
+			view.resetb.setEnabled(false);			
+		}	
+	
+	}
+	
+	class ButtonListener implements ActionListener {
+
+		int row = 0, column = 0;
+	}
+public ButtonListener(int r, int c){
+	row = r;
+	column = c;
+}
+		/*
+		{
+			System.out.println("Wut?");
+			engine.select(row, column);
+			CellState state = engine.cellStatus(row, column);
+
+			if (state == CellState.X)
+				view.buttons[row][column].setName("X");
+			else
+				// if(state == CellState.O)
+				view.buttons[row][column].setName("O");
+			// else
+			// view.buttons[row][column].setName("Empty");
+			view.displayBoard();
+		}
+		*/
+		public void actionPerformed(ActionEvent e) {
+			engine.select(row, column);
+		}
+
+		
+			
+	public static void main(String[] args) {
+		engine = new SuperTicTacToeModel(4, 4, 4);
+		view = new SuperTicTacToeView();
+		view.addResetButtonListener(new ResetButtonListener());
+		l = new ButtonListene();
+		addListeners();
+	}
+
+	private static void addListeners() {
+		// l = new ButtonListener();
+		for (int r = 0; r < 4; r++)
+			for (int c = 0; c < 4; c++) {
+				view.buttons[r][c].addActionListener(new ButtonListener(r,c)));
+				// System.out.println("Adding a button to " + r + " "+ c);
+			}
+		view.resetb.addActionListener(l);
+	}
+}

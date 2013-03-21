@@ -1,0 +1,17 @@
+/**
+ * 
+ */
+package gvprojects.chess.model;
+
+/**
+ * @author rohrj
+ *
+ */
+public class Bishop extends ChessPiece{
+
+	public Bishop(Player p) {
+		super(p, "Bishop");
+		// TODO Auto-generated constructor stub
+	}
+
+}

@@ -1,0 +1,5 @@
+package gvprojects.chess.model;
+
+public class Queen extends ChessPiece{
+
+}

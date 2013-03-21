@@ -1,0 +1,31 @@
+package gvprojects.chess.model;
+
+/**
+ * 
+ * @author rohrj
+ * 
+ */
+public class Knight extends ChessPiece {
+
+	public Knight(Player p) {
+		super(p, "Knight");
+	}
+
+	@Override
+	public boolean isValidMove(Move m, IChessPiece[][] p) {
+		if (super.isValidMove(m, p) == false)
+			return false;
+		else if (knightMove(m, p))
+			return true;
+		return false;
+	}
+
+	private boolean knightMove(Move m, IChessPiece[][] p) {
+		if (m.fromRow + 3 == m.toRow
+				&& (m.fromColumn + 1 == m.toColumn || m.fromColumn - 1 == m.toColumn))
+			return true;
+		else if (m.fromRow + 3 == m.toRow
+				&& (m.fromColumn + 1 == m.toColumn || m.fromColumn - 1 == m.toColumn))
+			return false;
+	}
+}

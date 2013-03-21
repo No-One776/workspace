@@ -1,0 +1,207 @@
+/**
+ * 
+ */
+package gvprojects.countdowntimer;
+
+/**
+ * @author rohrj
+ * 
+ */
+public class RandomCode {
+
+	public long fib(long n) {
+		long s = 1, c = 1;
+
+		if (n < 2)
+			throw new IllegalArgumentException(
+					"The Integer can't be smaller than 0");
+		else
+			for (int j = 2; j <= n; j++) {
+				long c = a + b;
+				a = b;
+				b = c;
+			}
+		return 1;
+	}
+
+	public static void main(String[] args) {
+		for (int n = 0; n < 100; n++)
+			System.out.println("Fibbonacci Number: " + fib(n));
+	}
+
+	// public static int findMinInt(int[] array) {
+	// int b = array[0];
+	// for (int a = 1; a <= array.length; a++) {
+	// if (b > array[a])
+	// b = array[a];
+	// }
+	// return b;
+	// }
+	// public static String findMinString(String[] array) {
+	// String str = array[0];
+	// for (int n = 1; n <= array.length; n++) {
+	// if (str.compareTo(array[n]) > 0)
+	// str = array[n];
+	// }
+	// return str;
+	// }
+	// public static <T extends Comparable<T>> T findMinObject(T[] array) {
+	// T str = array[0];
+	// for (int n = 1; n <= array.length; n++) {
+	// if (str.compareTo(array[n]) > 0)
+	// str = array[n];
+	// }
+	// return str;
+	// }
+
+	// CellState[] array;
+	//
+	// for (int r = 0; r < board.length; r++){
+	// //Putting Board columns into the array
+	// array = new CellState[board[0].length];
+	// for (int c = 0; c < board.length; c++){
+	// array[c] = board[r][c];
+	// if (c == board[0].length)
+	//
+	// }
+	// }
+
+	// //////////////////////////////////////////////////////////////////////////////////////
+	// STTT check
+	/**
+	 * if (obj.equals(GameStatus.X_WON)) return GameStatus.X_WON; else if
+	 * (obj.equals(GameStatus.O_WON)) return GameStatus.O_WON; else if
+	 * (obj.equals(GameStatus.IN_PROGRESS)) return GameStatus.IN_PROGRESS; else
+	 * return GameStatus.CATS;
+	 */
+
+	// if (playerturn % 2 == 0)
+	// return otherCheckForWin(game_board, i, CellState.O);
+	// return otherCheckForWin(game_board, i, CellState.X);
+
+	// return checkWin(game_board, win_length, CellState.X);
+	// return checkWin(game_board, win_length, CellState.O);
+
+	// private static GameStatus checkWin(CellState[][] board, int i, CellState
+	// x) {
+	// int count = 0, wrap = 0;
+	//
+	// for (int r = 0; r < board.length; r++) {
+	// wrap = 0;
+	// count = 0;
+	// for (int c = 0; c < board[r].length; c++) {
+	// if (board[r][c].equals(x))
+	// count++;
+	// else
+	// count = 0;
+	// if (count == i)
+	// if (x.equals(CellState.X))
+	// return GameStatus.X_WON;
+	// else
+	// return GameStatus.O_WON;
+	// if (c == board[0].length - 1 && count != 0 && wrap == 0) {
+	// c = -1;
+	// wrap++;
+	// }
+	// }
+	// }
+	//
+	// for (int c = 0; c < board[0].length; c++) {
+	// wrap = 0;
+	// count = 0;
+	// for (int r = 0; r < board.length; r++) {
+	// if (board[r][c].equals(x))
+	// count++;
+	// else
+	// count = 0;
+	// if (count == i)
+	// if (x.equals(CellState.X))
+	// return GameStatus.X_WON;
+	// else
+	// return GameStatus.O_WON;
+	// if (r == board.length - 1 && count != 0 && wrap == 0) {
+	// r = -1;
+	// wrap++;
+	// }
+	// }
+	// }
+	// for (int r = 0; r < board.length; r++)
+	// for (int c = 0; c < board[r].length; c++)
+	// if (board[r][c].equals(CellState.EMPTY))
+	// return GameStatus.IN_PROGRESS;
+	//
+	// return GameStatus.CATS;
+	// }
+
+	// int count = 0, wrap; // Checks Columns for win
+	// for (int r = 0; r < game_board.length; r++) {
+	// wrap = 0;
+	// count = 0;
+	// for (int c = 0; c < game_board[r].length; c++) {
+	// if (game_board[r][c].equals(CellState.X))
+	// count++;
+	// else
+	// count = 0;
+	// if (count == i)
+	// return GameStatus.X_WON;
+	// if (c == game_board[r].length - 1 && count != 0 && wrap == 0) {
+	// c = -1;
+	// wrap++;
+	// }
+	// }
+	// }
+	// for (int r = 0; r < game_board.length; r++) {
+	// wrap = 0;
+	// count = 0;
+	// for (int c = 0; c < game_board[r].length; c++) {
+	// if (game_board[r][c].equals(CellState.O))
+	// count++;
+	// else
+	// count = 0;
+	// if (count == i)
+	// return GameStatus.O_WON;
+	// if (c == game_board[r].length - 1 && count != 0 && wrap == 0) {
+	// c = -1;
+	// wrap++;
+	// }
+	// }
+	// }
+	// for (int c = 0; c < game_board[0].length; c++) {
+	// wrap = 0;
+	// count = 0;
+	// for (int r = 0; r < game_board.length; r++) {
+	// if (game_board[r][c].equals(CellState.O))
+	// count++;
+	// else
+	// count = 0;
+	// if (count == i)
+	// return GameStatus.O_WON;
+	// if (r == game_board.length - 1 && count != 0 && wrap == 0) {
+	// r = -1;
+	// wrap++;
+	// }
+	// }
+	// }
+	// for (int c = 0; c < game_board[0].length; c++) {
+	// wrap = 0;
+	// count = 0;
+	// for (int r = 0; r < game_board.length; r++) {
+	// if (game_board[r][c].equals(CellState.X))
+	// count++;
+	// else
+	// count = 0;
+	// if (count == i)
+	// return GameStatus.X_WON;
+	// if (r == game_board.length - 1 && count != 0 && wrap == 0) {
+	// r = -1;
+	// wrap++;
+	// }
+	// }
+	// }
+	// for (int r = 0; r < game_board.length; r++)
+	// for (int c = 0; c < game_board[r].length; c++)
+	// if (game_board[r][c].equals(CellState.EMPTY))
+	// return GameStatus.IN_PROGRESS;
+	// return GameStatus.CATS;
+
+}

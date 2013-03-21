@@ -1,0 +1,106 @@
+package gvprojects.superttt.presenter;
+
+import gvprojects.sttt.model.CellState;
+import gvprojects.superttt.model.SuperTicTacToeModel;
+import gvprojects.superttt.view.SuperTicTacToeView;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JComponent;
+
+public class SuperTicTacToePresenter {
+
+	private static SuperTicTacToeModel engine;
+	private static SuperTicTacToeView view;
+	private static ButtonListene l;
+
+	static class ButtonListene implements ActionListener {
+
+		/*
+		int row = 0, column = 0;
+		{
+			System.out.println("Wut?");
+			engine.select(row, column);
+			CellState state = engine.cellStatus(row, column);
+
+			if (state == CellState.X)
+				view.buttons[row][column].setName("X");
+			else
+				// if(state == CellState.O)
+				view.buttons[row][column].setName("O");
+			// else
+			// view.buttons[row][column].setName("Empty");
+			view.displayBoard();
+		}
+		*/
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("Wut?");
+
+			JComponent b = (JComponent) e.getSource();
+			System.out.println(e.getSource());
+			if (b.equals(view.resetb)) {
+				engine.reset();
+				view.resetb.setEnabled(false);
+			} else if (b == view.quitb) {
+				System.exit(0);
+
+			}
+			// @Override
+			// public void actionPerformed(ActionEvent e) {
+			// // TODO Auto-generated method stub
+			//
+			// }
+		}
+	}
+
+	// view.newSTTT.addActionListener(new ActionListener() {
+	// public void actionPerformed(ActionEvent e) {
+	// engine.reset();
+	// }
+	// });
+	//
+	// view.quit.addActionListener(new ActionListener() {
+	// public void actionPerformed(ActionEvent e) {
+	// System.exit(0);
+	// }
+	// });
+	//
+	// view.reset.addActionListener(new ActionListener() {
+	// public void actionPerformed(ActionEvent e) {
+	// engine.reset();
+	// }
+	// });
+	//
+	// view.quitb.addActionListener(new ActionListener() {
+	// public void actionPerformed(ActionEvent e) {
+	// System.exit(0);
+	// }
+	// });
+	//
+	// view.resetb.addActionListener(new ActionListener() {
+	// public void actionPerformed(ActionEvent e) {
+	// engine.reset();
+	// }
+	// });
+
+	// }
+
+	public static void main(String[] args) {
+		engine = new SuperTicTacToeModel(4, 4, 4);
+		view = new SuperTicTacToeView();
+		l = new ButtonListene();
+		addListeners();
+	}
+
+	private static void addListeners() {
+		// l = new ButtonListener();
+		for (int r = 0; r < 4; r++)
+			for (int c = 0; c < 4; c++) {
+				view.buttons[r][c].addActionListener(l);
+				// System.out.println("Adding a button to " + r + " "+ c);
+			}
+		view.resetb.addActionListener(l);
+	}
+}

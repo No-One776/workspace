@@ -1,0 +1,14 @@
+package gvprojects.chess.model;
+/**
+ * 
+ * @author rohrj
+ *
+ */
+public class Knight extends ChessPiece{
+
+	public Knight(Player p) {
+		super(p, "Knight");
+	}
+
+	
+}
