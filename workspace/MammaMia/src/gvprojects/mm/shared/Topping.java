@@ -16,7 +16,8 @@ import javax.imageio.ImageIO;
  */
 public enum Topping {
 
-	/* TODO: -------------------------------
+	/*
+	 * TODO: -------------------------------------------------------------------
 	 * Customize the topping images that you would like to use in the game Use a
 	 * question mark image for the ANY topping If you wish to change the solid
 	 * color associated with topping image, change the RGB values for each
@@ -27,12 +28,12 @@ public enum Topping {
 
 	/* TODO: Comment/Uncomment you choice of toppings */
 	/* Each topping is associated with an image and a solid color */
-	BLACK_OLIVE("images/black_olive.png", 'B', 156, 68, 123), GREEN_PEPPER(
-			"images/green_pepper.png", 'G', 108, 151, 65), HAM(
-			"images/ham.png", 'H', 251, 192, 192), CHEESE("images/cheese.png",
+	BLACK_OLIVE("images/olives.jpg", 'B', 156, 68, 123), GREEN_PEPPER(
+			"images/green_pepper.jpg", 'G', 108, 151, 65), HAM(
+			"images/ham.jpg", 'H', 251, 192, 192), CHEESE("images/cheese.jpg",
 			'C', 237, 212, 77),
 	// ONION ("images/onion.png", 233, 177, 137),
-	SAUSAGE("images/sausage.png", 'S', 238, 85, 64),
+	SAUSAGE("images/sausage.jpg", 'S', 238, 85, 64),
 	// TOMATO ("images/tomato.png", 224, 10, 37),
 
 	/* MUST INCLUDE Topping.ANY for wildcard in the game */
@@ -54,11 +55,15 @@ public enum Topping {
 		pat = new Color(r, g, b);
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public BufferedImage getImage() {
 		return theImage;
 	}
 
-	/*
+	/**
 	 * The pattern color is used for coloring the background of order/recipe
 	 * cards. This is also the color associated with a player
 	 */
@@ -66,7 +71,14 @@ public enum Topping {
 		return pat;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public char getCode() {
 		return code;
+	}
+	public static void main(String[] args){
+		
 	}
 }
