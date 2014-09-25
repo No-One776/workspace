@@ -1,9 +1,0 @@
-package gvprojects.chess.model;
-
-public class Queen extends ChessPiece{
-
-	public Queen(Player p) {
-		super(p, "Queen");
-	}
-
-}

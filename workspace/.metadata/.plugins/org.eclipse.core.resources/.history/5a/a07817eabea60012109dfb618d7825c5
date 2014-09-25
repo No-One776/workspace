@@ -1,0 +1,74 @@
+package gvprojects.mm.shared;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
+import org.junit.Test;
+
+/**
+ * A set of tests for the MammaMia Game Engine that thuroughly test the engines
+ * methods for playing the game
+ * 
+ * @author rohrj
+ * @version Mar 29, 2013
+ */
+public class EngineTest {
+	Model engine = new Model(5);
+
+	@Test
+	public void testPlayer() {
+		assertEquals(0, engine.getCurrentPlayer());
+		engine.nextPlayer();
+		assertEquals(1, engine.getCurrentPlayer());
+	}
+	
+	@Test 
+	public void testConstructor(){
+		Model e = new Model(5);
+		assertFalse("Checks supply isn't empty", e.getToppingCards().isEmpty());
+		//assertTrue("Check discard IS empty", e.getPizzaStack().isEmpty());
+		assertEquals(7, e.getPlayersHand(e.getCurrentPlayer()).size());
+		assertFalse("Check Engine Complete", e.isEndOfGame());
+		assertFalse("Check end of round", e.isEndOfRound());
+	}
+	
+	@Test (expected=IllegalArgumentException.class)
+	public void testGettingNonExistantPlayer() throws Throwable{
+		engine.getPlayersHand(5);
+	}
+	
+	@Test (expected=IllegalArgumentException.class)
+	public void testGetNoPlayersRecipeCards() throws Throwable{
+		engine.getPlayersRecipeCards(5);
+	}
+	
+	@Test 
+	public void testPlayersRecipeCardStackFilled(){
+		assertFalse("Check Recipe Cards Stack isn't empty", engine.getPlayersRecipeCards(engine.getCurrentPlayer()).isEmpty());
+	}
+	
+	@Test (expected=IllegalStateException.class)
+	public void testDrawThrowsExceptionHandNotEmpty() throws Throwable{
+		engine.drawToppingCards();
+	}
+	
+	@Test (expected=IllegalStateException.class)
+	public void testDrawRecipeThrowsExceptionHandNotEmpty() throws Throwable{
+		engine.drawRecipeCards();
+	}
+
+	@Test (expected=IllegalArgumentException.class)
+	public void playCardsInHandDoesntMatch() throws Throwable{
+		boolean[] select = {true, false};
+		engine.playCardsInHand(select);
+	}
+	
+	@Test
+	public void enginePlaysCardsInHand(){
+		boolean[] selected = new boolean[engine.getPlayersHand(engine.getCurrentPlayer()).size()];
+		for ( int x = 0; x < selected.length; x++)
+			selected[x] = false;
+		selected[0] = true;
+		engine.playCardsInHand(selected);
+	}
+}

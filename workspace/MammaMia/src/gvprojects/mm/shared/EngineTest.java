@@ -1,9 +1,8 @@
-/**
- * 
- */
 package gvprojects.mm.shared;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -15,11 +14,73 @@ import org.junit.Test;
  * @version Mar 29, 2013
  */
 public class EngineTest {
-	Model engine = new Model();
+	Model engine = new Model(5, 3, 13);
 
 	@Test
 	public void testPlayer() {
 		assertEquals(0, engine.getCurrentPlayer());
+		engine.nextPlayer();
+		assertEquals(1, engine.getCurrentPlayer());
+	}
+	
+	@Test 
+	public void testConstructor(){
+		Model e = new Model(5, 3, 13);
+		assertFalse("Checks supply isn't empty", e.getToppingCards().isEmpty());
+		//assertTrue("Check discard IS empty", e.getPizzaStack().isEmpty());
+		assertEquals(7, e.getPlayersHand(e.getCurrentPlayer()).size());
+		assertFalse("Check Engine Complete", e.isEndOfGame());
+		assertFalse("Check end of round", e.isEndOfRound());
+	}
+	
+	@Test (expected=IllegalArgumentException.class)
+	public void testGettingNonExistantPlayer() throws Throwable{
+		engine.getPlayersHand(5);
+	}
+	
+	@Test (expected=IllegalArgumentException.class)
+	public void testGetNoPlayersRecipeCards() throws Throwable{
+		engine.getPlayersRecipeCards(5);
+	}
+	
+	@Test 
+	public void testPlayersRecipeCardStackFilled(){
+		assertFalse("Check Recipe Cards Stack isn't empty", engine.getPlayersRecipeCards(engine.getCurrentPlayer()).isEmpty());
+	}
+	
+	@Test (expected=IllegalStateException.class)
+	public void testDrawThrowsExceptionHandNotEmpty() throws Throwable{
+		engine.drawToppingCards();
+	}
+	
+	@Test (expected=IllegalStateException.class)
+	public void testDrawRecipeThrowsExceptionHandNotEmpty() throws Throwable{
+		engine.drawRecipeCards();
 	}
 
+	@Test (expected=IllegalArgumentException.class)
+	public void playCardsInHandDoesntMatch() throws Throwable{
+		boolean[] select = {true, false};
+		engine.playCardsInHand(select);
+	}
+	
+	@Test
+	public void enginePlaysCardsInHand(){
+		boolean[] selected = new boolean[engine.getPlayersHand(engine.getCurrentPlayer()).size()];
+		for ( int x = 0; x < selected.length; x++)
+			selected[x] = false;
+		selected[0] = true;
+		engine.playCardsInHand(selected);
+		assertEquals(6, engine.getPlayersHand(engine.getCurrentPlayer()).size());
+	}
+	
+	@Test (expected=IllegalArgumentException.class)
+	public void playAllCardsNotTheSameThrowsException() throws Throwable{
+		boolean[] selected = new boolean[engine.getPlayersHand(engine.getCurrentPlayer()).size()];
+		for ( int x = 0; x < selected.length; x++)
+			selected[x] = true;
+		engine.playCardsInHand(selected);
+	}
+	
+	//Check Determine Winner, end game/round alongside, & scoring works right
 }

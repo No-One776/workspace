@@ -1,0 +1,309 @@
+package gvprojects.mm.shared;
+
+import gvprojects.mm.model.ICard;
+import gvprojects.mm.model.IRecipeCard;
+import gvprojects.mm.model.IToppingCard;
+import gvprojects.mm.model.MammaMia;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
+import java.util.Stack;
+
+/**
+ * A game engine for the Mammia Mia Card game. TODO: Finish Game descriptor
+ * Header
+ * 
+ * @author rohrj
+ * @version Mar 29, 2013
+ */
+public class Model implements MammaMia {
+
+	private int player, round;
+	private Stack<IToppingCard> supply;
+	private ArrayList<Stack> sort;
+	private Stack<ICard> discard;
+	private Player[] players;
+	private Topping[] pToppings = { Topping.BLACK_OLIVE, Topping.CHEESE,
+			Topping.GREEN_PEPPER, Topping.HAM, Topping.SAUSAGE, Topping.ANY };
+	private int numPlayers;
+
+	/**
+	 * TODO: Finish all javadoc, engine code, and engine tests
+	 */
+	/**
+	 * Constructor that creates a game engine
+	 */
+	public Model(int players) {
+		numPlayers = players;
+		player = 0;
+		round = 0;
+		supply = new Stack<IToppingCard>();
+		this.players = new Player[players];
+		Stack<IToppingCard> sorting;
+		sort = new ArrayList<Stack>();
+		for (int x = 0; x < 6; x++) {
+			sorting = new Stack<IToppingCard>();
+			sort.add(sorting);
+		}
+		for (int x = 0; x < 5; x++)
+			makeOrders(pToppings[x], x);
+		makeSupply();
+		dealHand();
+	}
+
+	public void nextPlayer() {
+		if (player >= 6)
+			player = 0;
+		else
+			player++;
+	}
+
+	// TODO: Randomize...
+	private void makeOrders(Topping t, int pID) {
+		players[pID] = new Player(t);
+		Set<String> str;
+		str = RecipeFactory.generateSet(t);
+		for (String s : str)
+			players[pID].setRecipeCards(new RecipeCard(s, t));
+
+	}
+
+	// TODO: Make sure randomizes properly
+	private void makeSupply() {
+		ToppingCard card;
+		int cardCount = 0, topping;
+		int[] tCount = new int[5];
+		Random generator = new Random();
+		while (cardCount < 65) {
+			topping = generator.nextInt(5);
+			if (tCount[topping] < 13) {
+				card = new ToppingCard(pToppings[topping]);
+				supply.push(card);
+				tCount[topping]++;
+				cardCount++;
+			}
+		}
+	}
+
+	private void sortCard(IToppingCard card) {
+		switch (card.getTopping()) {
+		case GREEN_PEPPER:
+			sort.get(0).push(card);
+			break;
+		case BLACK_OLIVE:
+			sort.get(1).push(card);
+			break;
+		case HAM:
+			sort.get(2).push(card);
+			break;
+		case CHEESE:
+			sort.get(3).push(card);
+			break;
+		case SAUSAGE:
+			sort.get(4).push(card);
+			break;
+		case ANY:
+			sort.get(5).push(card);
+			break;
+		}
+		// Sort the discard pile
+	}
+
+	/**
+	 * Determine the integer playerid of the winner.
+	 * 
+	 * @return the playerID of the winning player
+	 */
+	public int determineWinner() {
+		List<IRecipeCard>[] win = this.scorePizzaStack();
+		for (int x = 0; x < win.length; x++) {
+			// TODO:Count and return the winner pID
+		}
+		return 0;
+	}
+
+	/**
+	 * The current player draws cards from her own recipe pile to keep her hands
+	 * full (when possible).
+	 */
+	public void drawRecipeCards() throws IllegalStateException {
+		// Check to see if the player has a recipe card in their hand stack
+		if (players[player].getHand().elements().toString()
+				.equals(players[player].getTopping().toString()))
+			throw new IllegalStateException(
+					"You Already Have A Recipe Card In Your Hand!");
+		// Otherwise grab a recipe card from their stack and put in the hand
+		players[player].setHandCards(players[player].getRecipe().pop());
+		// TODO: Check this to make sure it works properly
+	}
+
+	/**
+	 * The current player draws cards from the topping pile to keep her hands
+	 * full (when possible).
+	 */
+	public void drawToppingCards() throws IllegalStateException {
+		int x = 0;
+		if (supply.isEmpty())
+			throw new IllegalStateException("Supply Stack is Empty!");
+		else if (players[player].getHand().size() >= 7)
+			throw new IllegalStateException("Hand is not empty!");
+		else
+			while (players[player].getHand().size() < 7)
+				players[player].setHandCards(supply.pop());
+		// TODO:Test this to make sure it works
+	}
+
+	/**
+	 * Return the integer playerid associated with the current player
+	 * 
+	 * @return the int playerID
+	 */
+	public int getCurrentPlayer() {
+		return player;
+	}
+
+	/**
+	 * Method to return the discard stack of pizza ingredients and recipes to be
+	 * made
+	 * 
+	 * @return the discarded card stack
+	 */
+	public Stack<ICard> getPizzaStack() {
+		return discard;
+	}
+
+	/**
+	 * Get the current cards held by a particular player
+	 * 
+	 * @return the players hand of ICard
+	 */
+	public List<ICard> getPlayersHand(int player)
+			throws IllegalArgumentException {
+		if (player < 0 || player > 4)
+			throw new IllegalArgumentException("Not a Valid Player!");
+		return players[player].getHand();
+	}
+
+	/**
+	 * Get the recipe cards owned by a particular player
+	 * 
+	 * @return the players order/recipe stack
+	 */
+	public Stack<IRecipeCard> getPlayersRecipeCards(int pID)
+			throws IllegalArgumentException {
+		if (pID < 0 || pID > 4)
+			throw new IllegalArgumentException("Not a valid Player!");
+
+		return players[pID].getRecipe();
+	}
+
+	/**
+	 * Method to return the Supply stack of ITopping Cards to draw from
+	 * 
+	 * @return the supply card stack
+	 */
+	public Stack<IToppingCard> getToppingCards() {
+		return supply;
+	}
+
+	/**
+	 * 
+	 */
+	public boolean isEndOfGame() {
+		return round >= 3 && supply.isEmpty() && players[numPlayers-1].isPlayed();
+	}
+
+	/**
+	 * Method to return true if the round is over or false otherwise
+	 * 
+	 * @return if the round is over
+	 */
+	public boolean isEndOfRound() {
+		return supply.empty() && players[numPlayers-1].isPlayed();
+	}
+
+	/**
+	 * The current player plays the selected card(s) from her hand to the pizza
+	 * stack.
+	 * 
+	 */
+	public void playCardsInHand(boolean[] selected) {
+		for (boolean s : selected)
+			System.out.println("Bool: " + s);
+		Stack<ICard> hand;
+		int rCount = 0, tCount = 0;
+		hand = players[player].getHand();
+		if (selected.length != hand.size()) {
+			throw new IllegalArgumentException("Illegal number of cards");
+		}
+
+		// Makes sure only one recipe card is played
+		// Also makes sure all toppings played are the same
+		for (int i = 0; i < selected.length; i++) {
+			if (hand.elementAt(i).equals(IRecipeCard.class)) {
+				// RecipeCard rTemp = (RecipeCard) hand.elementAt(i);
+				rCount++;
+				System.out.println("Recipe Card");
+				if (rCount > 1) {
+					throw new IllegalArgumentException(
+							"Cannot play more than 1 recipe card.");
+				}
+			} else {
+				tCount++;
+				Topping temp = null;
+				if (tCount == 1) {
+					temp = ((IToppingCard) hand.elementAt(i)).getTopping();
+				}
+				if (tCount > 1) {
+					if (temp != ((IToppingCard) hand.elementAt(i)).getTopping()) {
+						throw new IllegalArgumentException(
+								"Must play all same topping cards");
+					}
+				}
+			}
+		}
+
+		// After checking for exceptions, actually plays the cards
+		IRecipeCard rtemp = null;
+		for (int i = 0; i < selected.length; i++) {
+			if (hand.elementAt(i).equals(IRecipeCard.class) && selected[i]) {
+				rtemp = ((IRecipeCard) hand.elementAt(i));
+			} else if (selected[i]) {
+				discard.push(hand.remove(i));
+			}
+		}
+	}
+
+	/**
+	 * Check the pizza stack for completed orders.
+	 * 
+	 * @return the list of IRecipeCards completed
+	 */
+	public List<IRecipeCard>[] scorePizzaStack() throws IllegalStateException {
+		if (this.isEndOfRound() != true)
+			throw new IllegalStateException("The Round is Not Over!");
+		while (!discard.empty()) {
+			ICard card = discard.elementAt(0);
+			if (card.equals(IToppingCard.class))
+				;
+			{
+				sortCard((IToppingCard) card);
+			}
+		}
+		sortCard(null);
+		return null;// TODO:Sort, count pizza's made, and finish method
+	}
+
+	public void dealHand() {
+		for (int i = 0; i < numPlayers; i++) {
+			for (int j = 0; j < 6; j++) {
+				players[i].setHandCards(supply.pop());
+			}
+
+			players[i].setHandCards(players[i].getRecipe().pop());
+		}
+	}
+
+}

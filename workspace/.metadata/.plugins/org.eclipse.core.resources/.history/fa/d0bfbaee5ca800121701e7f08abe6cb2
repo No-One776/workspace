@@ -1,0 +1,226 @@
+package gvprojects.mm.presenter;
+
+import gvprojects.mm.shared.Model;
+import gvprojects.mm.shared.RecipeCard;
+import gvprojects.mm.shared.Topping;
+import gvprojects.mm.view.MyCard;
+import gvprojects.mm.view.View;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+/**
+ * @author rohrj
+ * @version Mar 29, 2013
+ */
+public class Presenter {
+	private Model engine;
+	private View view;
+	private boolean[] selected;
+
+	/**
+	 * 
+	 * @param e
+	 *            the engine to use
+	 * @param v
+	 *            the view to use
+	 */
+	public Presenter(Model e, View v) {
+		// Instantiate Fields
+		selected = new boolean[7];
+		engine = e;
+		view = v;
+		view.addDone(new DoneListener());
+		view.addDrawRecipe(new DrawRecipeListener());
+		view.addDrawTopping(new DrawToppingListener());
+		view.addReset(new ResetListener());
+		view.addSkip(new SkipListener());
+		view.addNewGame(new NewGameListener());
+
+		// Add the card listeners
+		for (int x = 0; x < 7; x++)
+			view.addCardListener(new CardListener(x), x);
+
+		engine.getCurrentPlayer();
+
+		// Run the game
+		runGame();
+	}
+
+	// TODO:Implement End Game/End of Round --Reshuffle cards to stack, recipes
+	// to bottom of players recipe stack, clear arrays,
+	private void runGame() {
+		if (engine.isEndOfGame())
+			endGame();
+		if (engine.isEndOfRound()) {
+			System.out.println("End of round");
+			int win = engine.determineWinner();
+			System.out.println("Determine done, clearSort");
+			engine.clearSort();
+			System.out.println("End of clearSort, shuffle");
+			engine.shuffleOrders();
+			System.out.println("End of shuffle, update winners");
+			view.updateWinners(1);
+		}
+
+		// Update the discard stack top card image
+		try {
+			view.updateDiscard(engine.getPizzaStack().lastElement(), engine.getCurrentPlayer());
+		} catch (Exception e) {
+			view.updateDiscard(new RecipeCard("", Topping.ANY, new MyCard(view
+					.getBackImage(), null)), engine.getCurrentPlayer());
+		}
+
+		// Set the selected boolean array size
+		selected = new boolean[engine.getPlayersHand(engine.getCurrentPlayer())
+				.size()];
+
+		// Update the display to the current players hand
+		for (int x1 = 0; x1 < 7; x1++)
+			// For each card
+			view.updateDisplay(engine.getPlayersHand(engine.getCurrentPlayer()));
+
+		// Add the Card Listeners
+		for (int x = 0; x < 7; x++)
+			view.addCardListener(new CardListener(x), x);
+
+		// Enable done/reset buttons
+		view.enableReset();
+	}
+
+	private void endGame() {
+		int winner = engine.determineWinner();
+		view.updateWinners(winner);
+		engine = engine.newGame();
+	}
+
+	class CardListener implements MouseListener {
+		private int x;
+
+		public CardListener(int x) {
+			this.x = x;
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			try {
+				if (!selected[x]) {
+					selected[x] = true;
+					view.drawCardTaken(x);
+				} else {
+					selected[x] = false;
+					view.drawCardUnTaken(x);
+				}
+			} catch (Exception t) {
+			}
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+		}
+	}
+
+	class DoneListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			int count = 0;
+			for (boolean s : selected)
+				if (s)
+					count++;
+			if (count > 0) {
+				try {
+					engine.playCardsInHand(selected);
+					view.draw();
+				} catch (RuntimeException s) {
+				}
+			}
+		}
+	}
+
+	class DrawRecipeListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			try {
+				engine.drawRecipeCards();
+				engine.nextPlayer();
+				runGame();
+			} catch (IllegalStateException r) {
+				view.draw();
+			}
+		}
+	}
+
+	class DrawToppingListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			try {
+				engine.drawToppingCards();
+				engine.nextPlayer();
+				runGame();
+			} catch (IllegalStateException s) {
+				view.draw();
+			}
+		}
+	}
+
+	class ResetListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			view.reset();
+			for (int x = 0; x < selected.length; x++)
+				selected[x] = false;
+		}
+	}
+
+	class SkipListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (engine.getToppingCards().isEmpty()) {
+				engine.skipPlayed();
+				engine.nextPlayer();
+				runGame();
+			}
+		}
+
+	}
+
+	class NewGameListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			engine = engine.newGame();
+			runGame();
+		}
+
+	}
+
+	/**
+	 * Main method to run the Mamma Mia Game
+	 * 
+	 * @param args
+	 *            the arguments to use
+	 */
+	public static void main(String[] args) {
+		View view = new View();
+		Model engine = new Model(5, 3, 13);
+		new Presenter(engine, view);
+	}
+}

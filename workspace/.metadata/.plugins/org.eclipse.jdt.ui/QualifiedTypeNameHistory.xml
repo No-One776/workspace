@@ -22,7 +22,6 @@
 <fullyQualifiedTypeName name="java.awt.Color"/>
 <fullyQualifiedTypeName name="gvprojects.sttt.model.CellState"/>
 <fullyQualifiedTypeName name="gvprojects.sttt.model.GameStatus"/>
-<fullyQualifiedTypeName name="java.awt.BorderLayout"/>
 <fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
 <fullyQualifiedTypeName name="gvprojects.superttt.view.GetGameParameters"/>
 <fullyQualifiedTypeName name="gvprojects.chess.model.IChessPiece"/>
@@ -30,4 +29,6 @@
 <fullyQualifiedTypeName name="gvprojects.chess.model.Pawn"/>
 <fullyQualifiedTypeName name="java.awt.geom.Point2D"/>
 <fullyQualifiedTypeName name="java.awt.geom.Point2D.Double"/>
+<fullyQualifiedTypeName name="gvprojects.mm.shared.Topping"/>
+<fullyQualifiedTypeName name="java.awt.BorderLayout"/>
 </qualifiedTypeNameHistroy>

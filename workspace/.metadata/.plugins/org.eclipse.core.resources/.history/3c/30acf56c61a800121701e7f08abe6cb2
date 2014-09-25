@@ -1,0 +1,101 @@
+package gvprojects.mm.shared;
+
+import gvprojects.mm.model.ICard;
+import gvprojects.mm.model.IRecipeCard;
+import gvprojects.mm.model.IToppingCard;
+import gvprojects.mm.view.CardImageFactory;
+import gvprojects.mm.view.MyCard;
+import gvprojects.mm.view.RecipeImage;
+
+import java.util.List;
+import java.util.Set;
+import java.util.Stack;
+import java.util.Vector;
+
+/**
+ * Player Class that holds a players specific topping and hand of cards
+ * 
+ * @author rohrj
+ * @version Apr 12, 2013
+ */
+public class Player {
+	private Topping topping;
+	private Stack<IRecipeCard> orders;
+	private Stack<ICard> hand;
+	private boolean played;
+	private int pID;
+
+	// TODO:Finish commenting and implementing class
+
+	public boolean isPlayed() {
+		return played;
+	}
+
+	/**
+	 * This method builds the player's recipe pile. It does this by using the
+	 * CardImageFactory class to get the images and topping combinations.
+	 * 
+	 */
+	private void buildRecipiePile() {
+		int i = 0;
+		List<RecipeImage>[] imageSet = CardImageFactory.createRecipeCards();
+		Set<String> oneSet = RecipeFactory.generateSet(topping);
+		for (String s : oneSet) {
+			MyCard c = new MyCard(imageSet[pID].get(i).getImage(), null);
+			orders.add(new RecipeCard(s, topping, c));
+			i++;
+		}
+	}
+
+	public void setPlayed(boolean played) {
+		this.played = played;
+	}
+
+	/**
+	 * Constructor that takes a topping that is special to this player and the
+	 * player ID of the player. Makes the the order/recipe stack and builds the
+	 * pile of Recipes for the player
+	 * 
+	 * @param p
+	 *            the special topping for this player
+	 * @param pID
+	 *            the player id to use
+	 */
+	public Player(Topping p, int pID) {
+		topping = p;
+		orders = new Stack<IRecipeCard>();
+		hand = new Stack<ICard>();
+		played = false;
+		this.pID = pID;
+		buildRecipiePile();
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public Topping getTopping() {
+		return topping;
+	}
+
+	public void setRecipeCards(IRecipeCard card) {
+		orders.add(0, card);
+	}
+
+	public Stack<IRecipeCard> getRecipes() {
+		return orders;
+	}
+
+	public Stack<ICard> getHand() {
+		return hand;
+	}
+
+	public void setHandCards(ICard card) {
+		hand.push(card);
+	}
+
+	public int getCompletedOrders() {
+		return 0;
+	}
+
+}

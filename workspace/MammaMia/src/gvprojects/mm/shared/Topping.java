@@ -28,10 +28,10 @@ public enum Topping {
 
 	/* TODO: Comment/Uncomment you choice of toppings */
 	/* Each topping is associated with an image and a solid color */
-	BLACK_OLIVE("images/olives.jpg", 'B', 156, 68, 123), GREEN_PEPPER(
-			"images/green_pepper.jpg", 'G', 108, 151, 65), HAM(
-			"images/ham.jpg", 'H', 251, 192, 192), CHEESE("images/cheese.jpg",
-			'C', 237, 212, 77),
+	BLACK_OLIVE("images/olives.jpg", 'B', 156, 68, 123), // Black Olive
+	GREEN_PEPPER("images/green_pepper.png", 'G', 108, 151, 65), // Green Pepper
+	HAM("images/ham.png", 'H', 251, 192, 192), // Ham
+	CHEESE("images/cheese.png", 'C', 237, 212, 77), // Cheese
 	// ONION ("images/onion.png", 233, 177, 137),
 	SAUSAGE("images/sausage.jpg", 'S', 238, 85, 64),
 	// TOMATO ("images/tomato.png", 224, 10, 37),
@@ -78,7 +78,8 @@ public enum Topping {
 	public char getCode() {
 		return code;
 	}
-	public static void main(String[] args){
-		
+
+	public static void main(String[] args) {
+
 	}
 }

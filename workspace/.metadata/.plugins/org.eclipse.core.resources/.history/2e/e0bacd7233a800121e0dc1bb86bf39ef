@@ -1,0 +1,65 @@
+
+
+import gvprojects.mm.model.ICard;
+import gvprojects.mm.model.IRecipeCard;
+import gvprojects.mm.shared.Topping;
+
+import java.util.Stack;
+
+/**
+ * Player Class that holds a players specific topping and hand of cards
+ * 
+ * @author rohrj
+ * @version Apr 12, 2013
+ */
+public class Player {
+	private Topping topping;
+	private Stack<IRecipeCard> orders;
+	private Stack<ICard> hand;
+
+	//TODO:Finish commenting and implementing class & combine mine & Travis's
+	
+	/**
+	 * 
+	 * @param p
+	 */
+	public Player(Topping p) {
+		topping = p;
+		orders = new Stack<IRecipeCard>();
+		hand = new Stack<ICard>();
+	}
+	
+	public int getSize(){
+		return hand.size();
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Topping getTopping(){
+		return topping;
+	}
+	
+	
+	public void setRecipeCards(IRecipeCard card){
+		orders.push(card);
+	}
+	
+	public Stack<IRecipeCard> getRecipe(){
+		return orders;
+	}
+	
+	public Stack<ICard> getHand(){
+		System.out.println("Hand Size: " + getSize());
+		return hand;
+	}
+
+	// public void setTopping(Topping t) {
+	// topping = t;
+	// }
+
+	public void setHandCards(ICard card) {
+		hand.push(card);
+	}
+}

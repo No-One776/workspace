@@ -1,0 +1,383 @@
+package gvprojects.mm.view;
+
+import gvprojects.mm.model.ICard;
+import gvprojects.mm.shared.RecipeCard;
+import gvprojects.mm.shared.ToppingCard;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+
+/**
+ * This view class is a GUI display for the Mamma Mia Game Engine that is
+ * controlled by the presenter using the MVP style.
+ * 
+ * The Cards are displayed using an array of MyCards that use Buffered Images.
+ * The Discard pile is also a MyCard that is using a loaded background image.
+ * JLabels are used to display scores and the current player.
+ * 
+ * @author rohrj
+ * @version Mar 29, 2013
+ */
+public class View {
+	private JFrame frame;
+	private JPanel main, buttons, stack, win;
+	private JLabel playerNumber;
+	private JLabel[] label;
+	private JButton quit, done, reset, drawRecipe, drawTopping, skipDraw;
+	private MyCard[] myCard;
+	private MyCard discard;
+	private BufferedImage backImage;
+	private BufferedImage[] cards;
+	private int[] winners;
+	private JMenuBar menu;
+	private JMenuItem quitm, resetm;
+	private JMenu fileMenu;
+
+	/**
+	 * Constructor that makes a Graphical UI for the Mamma Mia Game using AWT,
+	 * Swing, & MyCard Components.
+	 */
+	public View() {
+		// ---- Get the back image of the cards ---------------------------
+		File f = new File("images/back.jpg");
+		try {
+			backImage = ImageIO.read(f);
+		} catch (IOException e) {
+			System.err.println("Image file back was not found");
+		}
+
+		// -------------- Make the GUI -----------------------------------
+		cards();
+		buttons();
+		setUpMenus();
+		frame();
+
+		// -------- The Quit/End Button Listener and Action ----------------
+		quitm.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+
+		quit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+	}
+
+	/**
+	 * Method that sets up the GUI's JMenu Top Bar on the UI
+	 */
+	private void setUpMenus() {
+		// Create menu items
+		resetm = new JMenuItem("New Game");
+		quitm = new JMenuItem("End Game");
+
+		// Create the menu
+		menu = new JMenuBar();
+
+		// Create and add the file menu
+		fileMenu = new JMenu("File");
+		menu.add(fileMenu);
+
+		// Add menu items to the menu
+		fileMenu.add(resetm);
+		fileMenu.add(quitm);
+	}
+
+	private void frame() {
+		// JLabel for displaying who's turn it is
+		playerNumber = new JLabel("Player 1's Hand");
+
+		// ----------------JFrame Settings & Adding Panels----------------------
+		frame = new JFrame("Mamma Mia!");
+		frame.setJMenuBar(menu);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(new Dimension(950, 600));
+		frame.add(stack, BorderLayout.WEST);
+		frame.add(main, BorderLayout.NORTH);
+		frame.add(buttons, BorderLayout.SOUTH);
+		frame.add(playerNumber, BorderLayout.CENTER);
+		frame.setTitle("Mamma Mia Game!");
+		frame.setVisible(true);
+	}
+
+	/**
+	 * Gets and returns the loaded Background Buffered Image for the Cards.
+	 * 
+	 * @return the background image
+	 */
+	public BufferedImage getBackImage() {
+		return backImage;
+	}
+
+	/**
+	 * Creates the MyCards part of the GUI Display
+	 */
+	private void cards() {
+		myCard = new MyCard[7];
+
+		// Create the discard card
+		discard = new MyCard(backImage, backImage);
+
+		// --Get default card Topping images ------------------
+		cards = CardImageFactory.createToppingCards();
+
+		// Sets initial card images to the background
+		for (int x = 0; x < 7; x++)
+			myCard[x] = new MyCard(backImage, backImage);
+
+		// ---------- Main Panel + MyCards ----------------
+		main = new JPanel();
+		main.setBorder(BorderFactory.createTitledBorder("Player's Hand"));
+		main.setLayout(new FlowLayout());
+		for (int x = 0; x < myCard.length; x++)
+			main.add(myCard[x]);
+
+		// ----Displays the top discard card-----------------------------------
+		winners = new int[5];
+		win = new JPanel();
+		win.setLayout(new BoxLayout(win, BoxLayout.Y_AXIS));
+		label = new JLabel[5];
+		for (int x = 0; x < label.length; x++) {
+			label[x] = new JLabel("Player " + x + ": " + winners[x] + "\n");
+			win.add(label[x]);
+		}
+		stack = new JPanel();
+		stack.setBorder(BorderFactory.createTitledBorder("Supply/Discard Pile"));
+		stack.setLayout(new BoxLayout(stack, BoxLayout.X_AXIS));
+		stack.add(discard);
+		stack.add(win);
+	}
+
+	/**
+	 * Creates all the buttons to be used in the display GUI and adds them to a
+	 * separated panel for use
+	 */
+	private void buttons() {
+		// Buttons and buttons panel----------------
+		buttons = new JPanel();
+		quit = new JButton("Quit");
+		reset = new JButton("Reset");
+		done = new JButton("Done");
+		drawRecipe = new JButton("Draw Recipe");
+		drawTopping = new JButton("Draw Topping");
+		skipDraw = new JButton("Skip Draw");
+
+		// Add the Buttons to the Panel
+		buttons.add(quit, new FlowLayout());
+		buttons.add(reset);
+		buttons.add(done);
+		buttons.add(drawRecipe);
+		buttons.add(drawTopping);
+		buttons.add(skipDraw);
+
+		// Set buttons disabled
+		drawTopping.setEnabled(false);
+		drawRecipe.setEnabled(false);
+		skipDraw.setEnabled(false);
+
+	}
+
+	/**
+	 * Updates the display array of MyCards with the cards in the current
+	 * players hand
+	 * 
+	 * @param playersHand
+	 *            the List of ICards to update the display with
+	 */
+	public void updateDisplay(List<ICard> playersHand) {
+		// Remove all the cards listeners and the MyCards on the panel
+		for (int j = 0; j < myCard.length; j++)
+			myCard[j].removeAll();
+		main.removeAll();
+		// Remake the cards
+		int x = 0;
+		for (ICard c : playersHand) {
+			myCard[x] = getMyCard(c);
+			main.add(myCard[x]);
+			x++;
+		}
+		main.updateUI();
+	}
+
+	/**
+	 * Helper method to get the card images for a certain card
+	 * 
+	 * @param card
+	 *            the card to get an image for
+	 * @return the MyCard with the correct image
+	 */
+	private MyCard getMyCard(ICard card) {
+		// If its a topping card, get the image from the cards array of images
+		if (card.getClass() == ToppingCard.class) {
+			switch (((ToppingCard) card).getTopping()) {
+			case BLACK_OLIVE:
+				return (new MyCard(cards[0], backImage));
+			case GREEN_PEPPER:
+				return (new MyCard(cards[1], backImage));
+			case HAM:
+				return (new MyCard(cards[2], backImage));
+			case CHEESE:
+				return (new MyCard(cards[3], backImage));
+			case SAUSAGE:
+				return (new MyCard(cards[4], backImage));
+			default:
+				break;
+			}
+		}
+		// Otherwise its a recipe card and take the stored MyCard to return
+		return ((RecipeCard) card).getCard();
+	}
+
+	/**
+	 * Updates the discard pile MyCard and updates the JLabel for the current
+	 * player
+	 * 
+	 * @param card
+	 *            the card to update the display with
+	 * @param player
+	 *            the current player to display
+	 */
+	public void updateDiscard(ICard card, int player) {
+		// ----Update label ---------
+		frame.remove(playerNumber);
+		playerNumber = new JLabel("Player " + (player + 1) + "'s Hand");
+		frame.add(playerNumber);
+		frame.repaint();
+
+		// ---- Update the Discard card --------------
+		stack.removeAll();
+		win.removeAll();
+		discard = getMyCard(card);
+		for (int x = 0; x < label.length; x++) {
+			label[x] = new JLabel("Player " + x + ": " + winners[x] + "\n");
+			this.win.add(label[x]);
+		}
+		stack.add(discard);
+		stack.add(this.win);
+		stack.updateUI();
+	}
+
+	/**
+	 * Resets all the card borders to empty "not selected"
+	 */
+	public void reset() {
+		for (MyCard s : myCard)
+			s.setBorder(BorderFactory.createEmptyBorder());
+	}
+
+	/**
+	 * Adds a Mouse listener to the x card on the display & removes all the old
+	 * listeners from the card, if any
+	 * 
+	 * @param cardListener
+	 *            the mouselistener to use
+	 * @param x
+	 *            the card to add the listener too
+	 */
+	public void addCardListener(MouseListener cardListener, int x) {
+		// Removes any old listeners
+		for (MouseListener ml : myCard[x].getMouseListeners())
+			myCard[x].removeMouseListener(ml);
+
+		// Adds a new listener
+		myCard[x].addMouseListener(cardListener);
+	}
+
+	/**
+	 * Adds a ActionListener to the Done button
+	 * 
+	 * @param doneListener
+	 *            the listener to use
+	 */
+	public void addDone(ActionListener doneListener) {
+		done.addActionListener(doneListener);
+	}
+
+	/**
+	 * Adds a ActionListener to the DrawTopping button
+	 * 
+	 * @param doneListener
+	 *            the listener to use
+	 */
+	public void addDrawTopping(ActionListener drawListener) {
+		drawTopping.addActionListener(drawListener);
+	}
+
+	/**
+	 * Adds a ActionListener to the DrawRecipe button
+	 * 
+	 * @param doneListener
+	 *            the listener to use
+	 */
+	public void addDrawRecipe(ActionListener drawListener) {
+		drawRecipe.addActionListener(drawListener);
+	}
+
+	/**
+	 * Sets the draw buttons enabled and disables the other unneccesary buttons
+	 */
+	public void draw() {
+		// Set other buttons disabled
+		done.setEnabled(false);
+		reset.setEnabled(false);
+		skipDraw.setEnabled(true);
+		drawRecipe.setEnabled(true);
+		drawTopping.setEnabled(true);
+	}
+
+	public void addReset(ActionListener resetListener) {
+		reset.addActionListener(resetListener);
+	}
+
+	public void drawCardTaken(int x) {
+		myCard[x].setBorder(BorderFactory.createLoweredBevelBorder());
+		myCard[x].repaint();
+	}
+
+	public void drawCardUnTaken(int x) {
+		myCard[x].setBorder(BorderFactory.createEmptyBorder());
+		myCard[x].repaint();
+	}
+
+	public void enableReset() {
+		skipDraw.setEnabled(false);
+		drawRecipe.setEnabled(false);
+		drawTopping.setEnabled(false);
+		done.setEnabled(true);
+		reset.setEnabled(true);
+	}
+
+	public void addSkip(ActionListener skipListener) {
+		skipDraw.addActionListener(skipListener);
+	}
+
+	public void updateWinners(int win) {
+		winners[win]++;
+	}
+
+	public void addNewGame(ActionListener newGameListener) {
+		resetm.addActionListener(newGameListener);
+	}
+}

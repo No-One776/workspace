@@ -1,0 +1,60 @@
+/**
+ * 
+ */
+package gvprojects.mm.view;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+
+import javax.swing.JPanel;
+
+/**
+ * @author rohrj
+ * @version Apr 12, 2013
+ */
+public class MyCard extends JPanel {
+
+	private BufferedImage front, back, current;
+	private Dimension dim;
+
+	public MyCard(BufferedImage frontImg, BufferedImage backImg) {
+		front = frontImg;
+		back = backImg;
+		/* make the card to face up by default */
+		current = front;
+		dim = new Dimension(front.getWidth(), front.getHeight());
+	}
+
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawImage(current, 0, 0, /* coordinate of the upper-left corner */
+				Color.WHITE, /* background color */
+				null /* no image observer */);
+	}
+
+	public void faceUp() {
+		current = front;
+	}
+
+	public void faceDown() {
+		current = back;
+	}
+
+	@Override
+	public Dimension getMinimumSize() {
+		return dim;
+	}
+
+	@Override
+	public Dimension getPreferredSize() {
+		return dim;
+	}
+
+	public void setImage(BufferedImage image) {
+		// TODO Auto-generated method stub
+		
+	}
+}

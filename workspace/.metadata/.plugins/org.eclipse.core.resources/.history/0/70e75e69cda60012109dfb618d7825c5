@@ -1,0 +1,178 @@
+package gvprojects.mm.presenter;
+
+import gvprojects.mm.shared.Model;
+import gvprojects.mm.view.View;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+/**
+ * @author rohrj
+ * @version Mar 29, 2013
+ */
+public class Presenter {
+	private Model engine;
+	private View view;
+	private boolean[] selected;
+	private int player;
+
+	/**
+	 * 
+	 * @param e
+	 * @param v
+	 */
+	public Presenter(Model e, View v) {
+		// Instantiate Fields
+		selected = new boolean[7];
+		engine = e;
+		view = v;
+		view.addDone(new DoneListener());
+		view.addDrawRecipe(new DrawRecipeListener());
+		view.addDrawTopping(new DrawToppingListener());
+		view.addReset(new ResetListener());
+
+		// Add the card listeners
+		for (int x = 0; x < 7; x++)
+			view.addCardListener(new CardListener(x), x);
+
+		player = engine.getCurrentPlayer();
+
+		// Run the game
+		runGame();
+	}
+
+	// TODO: Get play, move cards from hand to discard, draw, next player w/
+	// view hand of cards update
+	private void runGame() {
+		// do { // TODO: fix never ending loop
+		// Update the discard stack top card
+		try {
+			view.updateDiscard(engine.getPizzaStack().lastElement());
+		} catch (NullPointerException e) {
+		}
+		System.out.println("Size"
+				+ engine.getPlayersHand(engine.getCurrentPlayer()).size());
+		selected = new boolean[engine.getPlayersHand(engine.getCurrentPlayer())
+				.size()];
+		try {
+
+			view.updateDiscard(engine.getPizzaStack().lastElement());
+		} catch (RuntimeException e) {
+		}
+
+		// Update the display to the current players hand
+		for (int x1 = 0; x1 < 7; x1++)
+			// For each card
+			view.updateDisplay(engine.getPlayersHand(engine.getCurrentPlayer()));
+
+		System.out.println("Player: " + engine.getCurrentPlayer() + "    "
+				+ player);
+
+		for (int x1 = 0; x1 < engine.getPlayersHand(engine.getCurrentPlayer())
+				.size(); x1++)
+			// For each card
+			view.updateDisplay(engine.getPlayersHand(engine.getCurrentPlayer() + 1));
+
+		System.out.println("Player: " + engine.getCurrentPlayer() + "    "
+				+ player);
+		// view.updateDiscard(new ToppingCard(Topping.ANY));
+
+		// } while (!engine.isEndOfGame());
+	}
+
+	class CardListener implements MouseListener {
+		private int x;
+
+		public CardListener(int x) {
+			this.x = x;
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			if (!selected[x]) {
+				selected[x] = true;
+				view.drawCardTaken(x);
+			} else {
+				selected[x] = false;
+				view.drawCardUnTaken(x);
+			}
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+		}
+	}
+
+	class DoneListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			engine.playCardsInHand(selected);
+			// view.draw();
+		}
+	}
+
+	class DrawRecipeListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			engine.drawRecipeCards();
+			engine.nextPlayer();
+			nextPlayer();
+			runGame();
+		}
+	}
+
+	class DrawToppingListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			engine.drawToppingCards();
+			engine.nextPlayer();
+			nextPlayer();
+			runGame();
+		}
+	}
+
+	class ResetListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			view.reset();
+			for (int x = 0; x < selected.length; x++)
+				selected[x] = false;
+		}
+	}
+
+	private void nextPlayer() {
+		if (player >= 6)
+			player = 0;
+		else
+			player++;
+	}
+
+	/**
+	 * Main method to run the Mamma Mia Game
+	 * 
+	 * @param args
+	 *            the arguments to use
+	 */
+	public static void main(String[] args) {
+		View view = new View();
+		Model engine = new Model(5);
+		new Presenter(engine, view);
+	}
+}

@@ -1,25 +1,21 @@
 package gvprojects.mm.shared;
 
 import gvprojects.mm.model.IRecipeCard;
+import gvprojects.mm.view.MyCard;
 
 /**
  * Recipe Card that is used to make a players needed Recipe for the card by
- * taking the string of ingredients and a topping that speciies who the owner of
- * the card is.
+ * taking the string of ingredients, a topping that specifies who the owner of
+ * the card is, and a MyCard for the image of this recipe.
  * 
  * @author rohrj
  * @version Mar 29, 2013
  */
 public class RecipeCard implements IRecipeCard {
 
-	// Add a constructor that that takes two parameters a String and a Topping
-	// (in that order). The String parameter describes the ingredients/recipe
-	// needed to bake a pizza. The Topping parameter is the special topping
-	// needed in the ingredient, which also identifies the "owner" of the
-	// recipe. Refer to the "Pizza Order Strings" below.
-
 	private String recipe;
 	private Topping topping;
+	private MyCard card;
 
 	/**
 	 * Creates a Recipe card with the specified string of ingredients and the
@@ -30,9 +26,19 @@ public class RecipeCard implements IRecipeCard {
 	 * @param p
 	 *            the "owner" Topping of the card
 	 */
-	public RecipeCard(String s, Topping p) {
+	public RecipeCard(String s, Topping p, MyCard card) {
 		recipe = s;
 		topping = p;
+		this.card = card;
+	}
+
+	/**
+	 * Returns the MyCard associated with this recipe card
+	 * 
+	 * @return the MyCard of this recipe
+	 */
+	public MyCard getCard() {
+		return card;
 	}
 
 	/**
